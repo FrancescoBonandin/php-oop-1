@@ -7,17 +7,28 @@ class Movie{
     public $poster;
     public $title;
     public $cast;
-    public $genre;
+    public array|string $genres;
     public static $category='movie';
 
 
 
-    public function __construct($_title, $_cast, $_genre, $_poster=null)
+    public function __construct($_title, $_cast, $_genres, $_poster=null)
     {   $this-> id = rand(0,(10*10));
         $this-> poster = $_poster;
         $this-> title = $_title;
         $this-> cast = $_cast;
-        $this-> genre = $_genre;
+
+        if(is_array($_genres)){
+            $this -> genres=[];
+            array_push( $this -> genres, ...array_values($_genres));
+        
+        }
+
+        else if (is_string($_genres)){
+
+            $this-> genres = $_genres;
+
+        }
     }
 
     public function getId() {
@@ -36,7 +47,7 @@ class Movie{
 
 $film1 = new Movie('Back to the future', 'Michael J. Fox', 'sci-fi');
 
-$film2 = new Movie('Back to the future 2', 'Michael J. Fox', 'sci-fi');
+$film2 = new Movie('Back to the future 2', 'Michael J. Fox', ['sci-fi','comedy'] );
 
 
 ?>
@@ -80,8 +91,21 @@ $film2 = new Movie('Back to the future 2', 'Michael J. Fox', 'sci-fi');
 
                 foreach($film1 as $key => $value){
 
-                    echo $film1->$key ;
-                    echo'<br>';
+                    if(!is_array($key)){
+                        
+                        echo $film1->$key ;
+                        echo'<br>';
+
+                    }
+
+                    else{
+
+                        echo "$key: <br>";
+                        
+                        foreach($key as $index => $value){
+                            echo "$value <br>";
+                        }
+                    }
                     
                 }
 
@@ -99,9 +123,26 @@ $film2 = new Movie('Back to the future 2', 'Michael J. Fox', 'sci-fi');
 
                 foreach($film2 as $key=>$value){
 
-                    echo $film2->$key;
+                    if(!is_array($film2 -> $key)){
+                        
+                        echo $film2 -> $key ;
+                        echo'<br>';
 
-                    echo'<br>';
+                    }
+
+                    else{
+
+                        echo "$key:";
+                        echo'<br>';
+                        
+                        foreach($film2->$key as $index => $value){
+
+                            echo $value;
+
+                            echo"<br>";
+
+                        }
+                    }
 
                 }
 
